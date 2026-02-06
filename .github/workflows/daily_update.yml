@@ -1,0 +1,48 @@
+name: Daily Cat Image Update
+
+# 워크플로우가 실행될 조건 설정
+on:
+  # 스케줄 실행: 매일 한국 시간 오전 8시 (UTC 23:00)
+  schedule:
+    - cron: '0 23 * * *'  # UTC 기준 매일 23:00 (한국 시간 오전 8시)
+  
+  # 수동 실행도 가능하도록 설정
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    # README.md 파일을 수정하고 커밋하기 위한 권한 설정
+    permissions:
+      contents: write
+    
+    steps:
+      # 1. 저장소 코드 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # 2. Python 환경 설정
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      # 3. 의존성 설치
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      # 4. 스크립트 실행 (고양이 사진 가져오기 및 README 업데이트)
+      - name: Update README with cat image
+        run: |
+          python main.py
+      
+      # 5. 변경사항 커밋 및 푸시
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🐱 오늘의 고양이 사진 업데이트 [$(date +'%Y-%m-%d')]" && git push)
