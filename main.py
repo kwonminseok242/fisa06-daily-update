@@ -15,34 +15,56 @@ from datetime import datetime
 
 def get_random_cat_image():
     """
-    RandomCat API에서 무작위 고양이 사진 URL을 가져옵니다.
+    여러 고양이 API를 시도하여 무작위 고양이 사진 URL을 가져옵니다.
+    Fallback 방식으로 여러 API를 순차적으로 시도합니다.
     
     Returns:
         str: 고양이 사진의 URL
     """
-    try:
-        # RandomCat API 엔드포인트 (API Key 불필요)
-        url = "https://aws.random.cat/meow"
-        
-        # API 요청
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()  # HTTP 에러가 있으면 예외 발생
-        
-        # JSON 응답 파싱
-        data = response.json()
-        cat_image_url = data.get("file", "")
-        
-        if not cat_image_url:
-            raise ValueError("이미지 URL을 찾을 수 없습니다.")
-        
-        return cat_image_url
+    # 여러 API 엔드포인트 목록 (순서대로 시도)
+    api_endpoints = [
+        {
+            "name": "The Cat API",
+            "url": "https://api.thecatapi.com/v1/images/search",
+            "parser": lambda data: data[0].get("url", "") if data else ""
+        },
+        {
+            "name": "RandomCat (Alternative)",
+            "url": "https://api.thecatapi.com/v1/images/search?format=json",
+            "parser": lambda data: data[0].get("url", "") if data else ""
+        },
+        {
+            "name": "Cataas API",
+            "url": "https://cataas.com/cat?json=true",
+            "parser": lambda data: f"https://cataas.com{data.get('url', '')}" if data.get('url') else ""
+        }
+    ]
     
-    except requests.exceptions.RequestException as e:
-        print(f"❌ API 요청 중 오류 발생: {e}")
-        raise
-    except Exception as e:
-        print(f"❌ 이미지 URL 추출 중 오류 발생: {e}")
-        raise
+    # 각 API를 순차적으로 시도
+    for api in api_endpoints:
+        try:
+            print(f"   시도 중: {api['name']}...")
+            response = requests.get(api["url"], timeout=10)
+            response.raise_for_status()
+            
+            data = response.json()
+            cat_image_url = api["parser"](data)
+            
+            if cat_image_url:
+                print(f"   ✅ {api['name']}에서 이미지 획득 성공!")
+                return cat_image_url
+            else:
+                print(f"   ⚠️  {api['name']}에서 이미지 URL을 찾을 수 없습니다.")
+        
+        except requests.exceptions.RequestException as e:
+            print(f"   ❌ {api['name']} 요청 실패: {str(e)[:50]}...")
+            continue
+        except Exception as e:
+            print(f"   ❌ {api['name']} 파싱 실패: {str(e)[:50]}...")
+            continue
+    
+    # 모든 API가 실패한 경우
+    raise Exception("모든 고양이 API에서 이미지를 가져올 수 없습니다. 네트워크 연결을 확인해주세요.")
 
 
 def update_readme(cat_image_url):
@@ -70,10 +92,15 @@ def update_readme(cat_image_url):
     today = datetime.now().strftime("%Y년 %m월 %d일")
     
     # 새로운 내용 생성 (마크다운 이미지 형식)
+    # HTML img 태그를 사용하여 크기 제한 및 중앙 정렬
     new_content = f"""
+<div align="center">
+
 ![오늘의 고양이 🐱]({cat_image_url})
 
 **업데이트 시간:** {today}
+
+</div>
 """
     
     # 패턴이 존재하는지 확인

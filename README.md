@@ -4,18 +4,22 @@
 
 ## 📋 프로젝트 소개
 
-이 프로젝트는 GitHub Actions를 사용하여 매일 자동으로 RandomCat API에서 고양이 사진을 가져와서 README.md 파일을 업데이트합니다.
+이 프로젝트는 GitHub Actions를 사용하여 매일 자동으로 고양이 API에서 고양이 사진을 가져와서 README.md 파일을 업데이트합니다.
 
-- **사용 API**: [RandomCat API](https://aws.random.cat/meow)
+- **사용 API**: [The Cat API](https://thecatapi.com/)
 - **자동화**: GitHub Actions (매일 한국 시간 오전 8시 실행)
 - **언어**: Python 3.x
 
 ## 🖼️ 오늘의 고양이
 
 <!-- CAT_START -->
-![오늘의 고양이 🐱](https://purr.objects-us-east-1.dream.io/i/IMG_20190126_200457.jpg)
+<div align="center">
 
-**업데이트 시간:** 2025년 02월 06일
+![오늘의 고양이 🐱](https://cdn2.thecatapi.com/images/P-Zyb-4BZ.jpg)
+
+**업데이트 시간:** 2026년 02월 06일
+
+</div>
 <!-- CAT_END -->
 
 ## 🚀 사용 방법
@@ -61,16 +65,25 @@ fisa06-daily-update/
 ## 🔧 주요 기능
 
 - ✅ **자동화**: GitHub Actions를 통한 매일 자동 업데이트
-- ✅ **무료 API**: API Key 없이 사용 가능한 RandomCat API
+- ✅ **무료 API**: API Key 없이 사용 가능한 고양이 API
 - ✅ **간단한 구조**: 초보자도 이해하기 쉬운 코드
 - ✅ **에러 처리**: API 오류 시 적절한 에러 메시지 출력
+- ✅ **Fallback**: 여러 API를 순차적으로 시도하여 안정성 확보
 
 ## 📝 코드 설명
 
 ### main.py
 
-- `get_random_cat_image()`: RandomCat API에서 고양이 사진 URL을 가져옵니다.
-- `update_readme()`: README.md 파일의 마커(`<!-- CAT_START -->`, `<!-- CAT_END -->`) 사이 내용을 새로운 사진으로 교체합니다.
+- `get_random_cat_image()`: 여러 고양이 API를 순차적으로 시도하여 고양이 사진 URL을 가져옵니다.
+- `update_readme()`: README.md 파일의 마커(`<!-- CAT_START -->
+<div align="center">
+
+![오늘의 고양이 🐱](https://cdn2.thecatapi.com/images/P-Zyb-4BZ.jpg)
+
+**업데이트 시간:** 2026년 02월 06일
+
+</div>
+<!-- CAT_END -->`) 사이 내용을 새로운 사진으로 교체합니다.
 
 ### daily_update.yml
 
@@ -81,6 +94,8 @@ fisa06-daily-update/
 ## 🎨 다른 API로 변경하기
 
 이 프로젝트를 다른 API로 변경하고 싶다면 `main.py`의 `get_random_cat_image()` 함수를 수정하면 됩니다.
+
+더 자세한 내용은 `API_OPTIONS.md` 파일을 참고하세요.
 
 ### 예시: 강아지 사진 API로 변경
 
@@ -104,7 +119,7 @@ def get_quote():
 
 ## 📚 참고 자료
 
-- [RandomCat API](https://aws.random.cat/meow)
+- [The Cat API](https://thecatapi.com/)
 - [GitHub Actions 문서](https://docs.github.com/en/actions)
 - [open-apis-korea](https://github.com/dl0312/open-apis-korea) - 한국어 사용자를 위한 오픈 API 모음
 
@@ -114,5 +129,4 @@ def get_quote():
 
 ---
 
-**마지막 업데이트**: 2025년 02월 06일
-# fisa06-daily-update
+**마지막 업데이트**: 2026년 02월 06일

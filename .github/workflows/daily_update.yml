@@ -45,4 +45,11 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add README.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "🐱 오늘의 고양이 사진 업데이트 [$(date +'%Y-%m-%d')]" && git push)
+          # 변경사항이 있을 때만 커밋 및 푸시
+          if git diff --staged --quiet; then
+            echo "⚠️ 변경사항이 없습니다. 커밋을 건너뜁니다."
+          else
+            git commit -m "🐱 오늘의 고양이 사진 업데이트 [$(date +'%Y-%m-%d %H:%M:%S')]"
+            git push
+            echo "✅ 변경사항이 성공적으로 푸시되었습니다."
+          fi
