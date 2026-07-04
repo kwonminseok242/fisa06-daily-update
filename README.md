@@ -15,7 +15,7 @@
 <!-- CAT_START -->
 <div align="center">
 
-![오늘의 고양이 🐱](https://cdn2.thecatapi.com/images/dvv.jpg)
+![오늘의 고양이 🐱](https://cdn2.thecatapi.com/images/FJ89mXP4p.jpg)
 
 **업데이트 시간:** 2026년 07월 04일
 
@@ -78,7 +78,7 @@ fisa06-daily-update/
 - `update_readme()`: README.md 파일의 마커(`<!-- CAT_START -->
 <div align="center">
 
-![오늘의 고양이 🐱](https://cdn2.thecatapi.com/images/dvv.jpg)
+![오늘의 고양이 🐱](https://cdn2.thecatapi.com/images/FJ89mXP4p.jpg)
 
 **업데이트 시간:** 2026년 07월 04일
 
